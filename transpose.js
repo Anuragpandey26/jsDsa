@@ -11,7 +11,6 @@ function transpose(matrix) {
       result[i][j] = matrix[j][i];  
     }
   }
-
   return result;
 }
 console.log(transpose(matrix));

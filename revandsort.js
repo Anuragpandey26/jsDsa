@@ -33,14 +33,18 @@ function ReverseStr(str){
 console.log(ReverseStr("hello"))
 
 // rev string in array
-function ReverseStr(arr){
-   let rev=[]
-   for(let i=arr.length-1;i>=0;i--){
-       rev.push(arr[i].split('').reverse().join(''));
-   }
-   return rev
+function ReverseStr(arr) {
+    let result = [];
+    for (let word of arr) {
+        let rev = '';
+        for (let char of word) {
+            rev = char + rev;  
+        }
+        result.push(rev);
+    }
+    return result;
 }
-console.log(ReverseStr(["hello"]))
+console.log(ReverseStr(["hello"]));
 
 // sorting string
 function sortString(str){
