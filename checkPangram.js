@@ -1,16 +1,9 @@
 function checkIfPangram(sentence) {
-  let freq = [];
-  for (let i = 0; i < 26; i++) {
-    freq[i] = 0;
-  }
+  let seen = new Set();
   for (let ch of sentence) {
-    freq[ch - 'a']++;
+    seen.add(ch); // add each letter to the set
   }
-  for (let count of freq) {
-    if (count === 0) return false;
-  }
-  return true;
+  return seen.size === 26; // true if all 26 letters are present
 }
-// Example
 console.log(checkIfPangram("thequickbrownfoxjumpsoverthelazydog")); // true
 console.log(checkIfPangram("leetcode")); // false
