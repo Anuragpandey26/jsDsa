@@ -4,7 +4,7 @@ function minBitFlips(start, goal) {
 
     while (xor > 0) {
         count += xor & 1;
-        xor >>= 1;
+        xor =xor>> 1;
     }
 
     return count;

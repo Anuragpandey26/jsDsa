@@ -1,22 +1,18 @@
 function romanToInt(s) {
   const roman = {
-    I: 1,
-    V: 5,
-    X: 10,
-    L: 50,
-    C: 100,
-    D: 500,
-    M: 1000
+    I: 1, V: 5, X: 10,
+    L: 50, C: 100, D: 500, M: 1000
   };
   let result = 0;
-  for (let i = 0; i < s.length; i++) {
-    const curr = roman[s[i]];
-    const next = i + 1 < s.length ? roman[s[i + 1]] : 0;
-    if (curr < next) {
+  let prev = 0;
+  for (let i = s.length - 1; i >= 0; i--) {
+    let curr = roman[s[i]];
+    if (curr < prev) {
       result -= curr;
     } else {
       result += curr;
     }
+    prev = curr;
   }
   return result;
 }
