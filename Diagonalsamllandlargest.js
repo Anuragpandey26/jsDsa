@@ -1,36 +1,20 @@
-function findDiagonalMinMax(matrix) {
-    const n = matrix.length;
-    let leftMax = -Infinity, leftMin = Infinity;
-    let rightMax = -Infinity, rightMin = Infinity;
-    for (let i = 0; i < n; i++) {
-        const leftElement = matrix[i][i];
-        const rightElement = matrix[i][n - 1 - i];
-        if (leftElement > leftMax) leftMax = leftElement;
-        if (leftElement < leftMin) leftMin = leftElement;
-        if (rightElement > rightMax) rightMax = rightElement;
-        if (rightElement < rightMin) rightMin = rightElement;
-     }
-    return {
-        leftDiagonal: {
-            largest: leftMax,
-            smallest: leftMin
-        },
-        rightDiagonal: {
-            largest: rightMax,
-            smallest: rightMin
-        }
-    };
+function MatDiagonal(matrixA){
+    let leftlargest=-Infinity
+    let leftsmallest =Infinity
+    let rightlargest=-Infinity
+    let rightsmallest =Infinity
+    let n= matrixA.length
+     for(let i =0;i < matrixA.length;i++){
+    if(matrixA[i][i]>leftlargest) leftlargest = matrixA[i][i]
+    if(matrixA[i][n-1-i]>rightlargest) rightlargest= matrixA[i][n-1-i]
+    if(matrixA[i][i]<leftsmallest) leftsmallest= matrixA[i][i]
+   if(matrixA[i][n-1-i]<rightsmallest) rightsmallest = matrixA[i][n-1-i]
+  }
+  return [leftlargest,leftsmallest,rightlargest, rightsmallest]
 }
-const matrix = [
-    [5,  2,  3],
-    [4,  1,  6],
-    [7,  8,  9]
-];
-const result = findDiagonalMinMax(matrix);
-console.log("Results:");
-console.log("Left Diagonal:");
-console.log("  Largest :", result.leftDiagonal.largest);
-console.log("  Smallest:", result.leftDiagonal.smallest); 
-console.log("Right Diagonal:");
-console.log("  Largest :", result.rightDiagonal.largest);  
-console.log("  Smallest:", result.rightDiagonal.smallest); 
+const matrixA =[
+     [1,2,5],
+     [3,4,5],
+     [6,7,8]
+    ];
+console.log(MatDiagonal(matrixA))
