@@ -1,43 +1,20 @@
 //rev array
 function ReverseArray(nums1){
-    let res = []
+    let res = []  //let rev=""
     for(let i=nums.length-1;i>=0;i--){
-        res.push(nums[i]);
+        res.push(nums[i]); // rev+=str[i]; for srting reverse
     }
     return res
 }
 const nums1=[1,2,3,4,5]
 console.log(ReverseArray(nums2));
 
-//sorting array
-function SortingArray(nums){
-    for(let i =0;i<nums.length;i++){
-      for(let j =0;j<nums.length;j++){
-        if(nums[j]>nums[j+1]){
-            [nums[j+1],nums[j]]=[nums[j],nums[j+1]]
-        }
-      }
-    }
-    return nums2
-}
-const nums2=[1,3,5,2,4]
-console.log(SortingArray(nums));
-//rev string
-function ReverseStr(str){
- let rev=""
-  for (let i=str.length-1;i>=0;i--){
-     rev+=str[i];
-  }
-  return rev
-}
-console.log(ReverseStr("hello"))
-
 // rev string in array
 function ReverseStr(arr) {
     let result = [];
     for (let word of arr) {
         let rev = '';
-        for (let char of word) {
+        for (let char of word){
             rev = char + rev;  
         }
         result.push(rev);

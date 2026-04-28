@@ -1,4 +1,4 @@
-function sortSentence(s) {
+function sortSentence(s){
     let ans = "";
     let temp = [];   // dynamic array
     let word = "";
@@ -16,6 +16,4 @@ function sortSentence(s) {
     }
     return ans.trim();            // remove trailing space
 }
-// Example
 console.log(sortSentence("is2 sentence4 This1 a3"));
-// Output: "This is a sentence"

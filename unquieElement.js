@@ -8,9 +8,10 @@ function uniqueElementsOnly(arr){
              freq[arr[i]]=1;
         }
     }
-    for (let i = 0; i < arr.length; i++) {
-        if (freq[arr[i]] === 1) {
-            result.push(arr[i]);
+    for (let key in freq) {
+        if (freq[key] === 1) {
+            // Note: Object keys are always strings, so we convert back to Number
+            result.push(Number(key)); 
         }
     }
     return result;

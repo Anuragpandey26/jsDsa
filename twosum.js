@@ -8,6 +8,7 @@ function TwoSum(arr,target){
         if(sum===target)
         {
             return [arr[left],arr[right]];
+            // return [left,right]; // if need only index
         }
         else if(sum>target)
         {
@@ -23,18 +24,3 @@ function TwoSum(arr,target){
 const arr = [1,3,4,5,8,7];
 const target=50
 console.log("the which give the sum is :",TwoSum(arr,target));
-
-// it give the index
-function twoSum(nums, target1) {
-    for (let i = 0; i < nums.length; i++) {
-        for (let j = i + 1; j < nums.length; j++) {
-            if (nums[i] + nums[j] === target) {
-                return [i, j];
-            }
-        }
-    }
-    return [];
-}
-const nums=[2, 7, 11, 15]
-const target1=9
-console.log(twoSum(nums, target1)); 
