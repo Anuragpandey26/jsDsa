@@ -41,7 +41,7 @@ Promise.all([p1, p2, p3])
 // Resolves: When ALL promises have settled (either resolved or rejected).
 // Returns an array of objects describing the outcome of each promise. NEVER rejects on its own.
 setTimeout(() => {
-    console.log("\n--- 2. Promise.allSettled ---");
+    console.log("--- 2. Promise.allSettled ---");
     Promise.allSettled([p1, p2, p3])
         .then(results => {
             console.log("Promise.allSettled results:");
@@ -55,7 +55,7 @@ setTimeout(() => {
 // -----------------------------------------------------------------------------
 // Settles: As soon as the FIRST promise settles (resolves OR rejects).
 setTimeout(() => {
-    console.log("\n--- 3. Promise.race ---");
+    console.log("--- 3. Promise.race ---");
     // p3 resolves in 500ms, so it wins the race
     Promise.race([p1, p2, p3])
         .then(result => console.log("Promise.race Winner:", result)) // 'Promise 3 Resolved!'
@@ -75,7 +75,7 @@ setTimeout(() => {
 // Resolves: As soon as the FIRST promise RESOLVES. (Ignores rejections if others eventually resolve)
 // Rejects: ONLY if ALL promises reject. Returns an AggregateError.
 setTimeout(() => {
-    console.log("\n--- 4. Promise.any ---");
+    console.log("--- 4. Promise.any ---");
     // p3 resolves first, so it wins. p2's rejection is ignored.
     Promise.any([p1, p2, p3])
         .then(result => console.log("Promise.any Winner (First to resolve):", result)) // 'Promise 3 Resolved!'
@@ -95,6 +95,6 @@ setTimeout(() => {
 // -----------------------------------------------------------------------------
 // Utility methods to quickly create a promise that is already resolved or rejected.
 // Often used when you need to return a Promise from a function but already have the value synchronously.
-console.log("\n--- 5. Promise.resolve & Promise.reject ---");
+console.log("--- 5. Promise.resolve & Promise.reject ---");
 Promise.resolve("Immediate Success!").then(res => console.log("Promise.resolve ->", res));
 Promise.reject("Immediate Failure!").catch(err => console.log("Promise.reject ->", err));

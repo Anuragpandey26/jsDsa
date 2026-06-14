@@ -22,5 +22,5 @@ function TwoSum(arr,target){
     return "not getting target"
 }
 const arr = [1,3,4,5,8,7];
-const target=50
+const target=5
 console.log("the which give the sum is :",TwoSum(arr,target));

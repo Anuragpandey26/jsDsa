@@ -12,4 +12,4 @@ const matrix=[
      [1,2,3,5],
      [1,2,3,4]
     ];
-console.log("the sum of the matrix  is :",SumMat(matrix))
+console.log("the sum of the matrix  is :",SumMat(matrix));
