@@ -1,13 +1,15 @@
-function DuplicateStr(str){
-    let result=""
-    for(let i = 0;i<str.length;i++){
-        for(let j=i+1;j<str.length;j++){
-            if(str[i]===str[j] && ! result.includes(j)){
-              result+=str[j]
+function DuplicateStr(str) {
+    let result = "";
+    for (let i = 0; i < str.length; i++) {
+        for (let j = i + 1; j < str.length; j++) { 
+            // FIXED: Check if the character (str[j]) is already in the result
+            if (str[i] === str[j] && !result.includes(str[j])) {
+              result += str[j];
             }
         }
     }
-    return  result;
+    
+    return result;
 }
 const str="ab"
 console.log("the str has duplicate:",DuplicateStr(str));

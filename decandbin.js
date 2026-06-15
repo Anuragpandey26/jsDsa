@@ -10,7 +10,7 @@ function DecimalToBinary(num){
     return binary 
 }
 console.log("the binary representation is:",DecimalToBinary(10));
-
+// %2 and /2 
 
 function BinaryToDecimal(num){
      let decimal = 0;
@@ -24,4 +24,4 @@ function BinaryToDecimal(num){
     return decimal
 }
 console.log("the decimal representation is:",BinaryToDecimal(1000));
-
+// %10 and /10
