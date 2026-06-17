@@ -1,46 +1,52 @@
-// Promise Example
-function fetchData(success) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (success) {
-                resolve("Data fetched successfully!");
-            } else {
-                reject("Failed to fetch data.");
-            }
-        }, 1000); // Simulates a 1-second delay
+const checkInventory=()=> new Promise(res => setTimeout(() => res("In stock"), 400));
+const chargePayment=()=> new Promise(res => setTimeout(() => res("Charged ₹499"), 600));
+const notifyWarehouse=()=> new Promise(res => setTimeout(() => res("Warehouse notified"), 300));
+const sendEmailReceipt=()=> new Promise((_,rej) => setTimeout(() => rej("Email failed"), 200));
+const fastShipping=()=> new Promise(res => setTimeout(() => res("FastShip: 2 days"), 250));
+const slowShipping=()=> new Promise(res => setTimeout(() => res("SlowShip: 5 days"), 800));
+const notifySMS=()=> new Promise((_,rej) => setTimeout(() => rej("SMS failed"), 100));
+const notifyPush=()=> new Promise(res => setTimeout(() => res("Push sent"), 150)); 
+const notifyEmail=()=> new Promise(res => setTimeout(() => res("mail sent"), 300));
+async function processOrder() {
+  try {                                              
+    // 1. Promise.all — both MUST succeed
+    const [inventory, payment] = await Promise.all([
+      checkInventory(),
+      chargePayment()
+    ]);
+    console.log("Critical steps:", inventory, payment);
+    // 2. Promise.allSettled — track ALL outcomes, even failures
+    const logistics = await Promise.allSettled([
+      notifyWarehouse(),
+      sendEmailReceipt()
+    ]);
+    logistics.forEach(result => {
+      if (result.status === "fulfilled") console.log(result.value);
+      else console.warn("Non-critical failure:", result.reason);
     });
+    // 3. Promise.race — whichever estimate arrives first wins
+    const shippingETA = await Promise.race([
+      fastShipping(),
+      slowShipping()
+    ]);
+    console.log("Shipping ETA:", shippingETA);
+    // 4. Promise.any — first channel that succeeds (SMS fails, push wins)
+    const notification = await Promise.any([
+      notifySMS(),
+      notifyPush(),
+      notifyEmail()
+    ]);
+    console.log("Notification sent via:", notification);
+    // 5. .then() — chain next step on the notification result
+    Promise.resolve(notification)
+      .then(msg => console.log("Order confirmed", msg))
+      .catch(err => console.error("Confirm error", err))    
+      .finally(() => console.log("Order pipeline done")); 
+
+  } catch (err) {                                    
+    console.error("Order FAILED  rolling back:", err);
+  } finally {                                         
+    console.log("Cleanup: releasing DB connection");
+  }
 }
-
-// --- 1. Using Promises (.then / .catch) ---
-console.log("1. Starting Promise example...");
-fetchData(true)
-    .then(data => {
-        console.log("   Promise resolved:", data);
-    })
-    .catch(error => {
-        console.error("   Promise rejected:", error);
-    });
-
-
-// --- 2. Using Async / Await ---
-async function processData() {
-    console.log("2. Starting Async/Await example...");
-    try {
-        // 'await' pauses the execution of this async function until the promise settles
-        const data = await fetchData(true);
-        console.log("   Async/Await success:", data);
-        
-        // Example of handling a failure with async/await
-        const failedData = await fetchData(false);
-        // The line below won't execute because fetchData(false) rejects and throws an error to the catch block
-        console.log(failedData); 
-    } catch (error) {
-        console.error("   Async/Await error caught:", error);
-    }
-}
-
-// Using setTimeout just to separate the console output of the two examples visually
-setTimeout(() => {
-    console.log("\n-----------------------------------\n");
-    processData();
-}, 1500);
+processOrder();
