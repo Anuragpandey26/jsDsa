@@ -1,83 +1,106 @@
+// You are building a User Profile Validator for a registration form. 
+// You receive a raw user input string and a filename.
+//  Using the data below, perform all operations using each method exactly once.
+
 // ==========================================
-// Frequently Asked String Methods in Interviews
+// String Methods - User Profile Validator
 // ==========================================
 
-const str = "  Hello, World! JavaScript is awesome.  ";
-const word = "JavaScript";
-
-// 1. split()
-// Splits a string into an array of substrings based on a specified separator.
-// Interview Question: "How do you reverse a string?" -> str.split('').reverse().join('')
-const wordsArray = str.trim().split(" ");
-const charsArray = word.split("");
-console.log("1. split(): Words ->", wordsArray);
-console.log("   split(): Characters ->", charsArray);
+const rawInput  = "  anurag sharma  ";   // user typed name with extra spaces
+const bio       = "i love javascript. javascript is awesome.";
+const password  = "MySecret@123";
+const fileName  = "profile_anurag.jpg";
+const userId    = "USR-4829-XYZ";
 
 
-// 2. slice() vs substring()
-// Both extract a portion of a string.
-// slice() allows negative indices (counts from the end).
-// substring() treats negative indices as 0.
-const baseStr = "Frontend Development";
-console.log("2. slice(0, 8):", baseStr.slice(0, 8)); // 'Frontend'
-console.log("   slice(-11):", baseStr.slice(-11)); // 'Development'
-console.log("   substring(0, 8):", baseStr.substring(0, 8)); // 'Frontend'
-console.log("   substring(-11):", baseStr.substring(-11)); // 'Frontend Development' (treated as 0)
+// 1. trim() — clean the raw name input
+const cleanName = rawInput.trim();
+console.log(cleanName); // "anurag sharma"
 
 
-// 3. replace() / replaceAll()
-// Returns a new string with some or all matches of a pattern replaced by a replacement.
-const text = "apples are round, and apples are juicy.";
-const replacedOne = text.replace("apples", "oranges"); // Replaces only first instance
-const replacedAll = text.replaceAll("apples", "oranges"); // Replaces all instances
-console.log("3. replace():", replacedOne);
-console.log("   replaceAll():", replacedAll);
+// 2. split() — separate first and last name
+const [firstName, lastName] = cleanName.split(" ");
+console.log(firstName); // "anurag"
+console.log(lastName);  // "sharma"
 
 
-// 4. indexOf() / lastIndexOf()
-// indexOf: Returns the index of the first occurrence of a specified text in a string. Returns -1 if not found.
-// lastIndexOf: Returns the index of the last occurrence.
-const searchStr = "hello world, hello universe";
-console.log("4. indexOf('hello'):", searchStr.indexOf("hello")); // 0
-console.log("   lastIndexOf('hello'):", searchStr.lastIndexOf("hello")); // 13
-console.log("   indexOf('JS'):", searchStr.indexOf("JS")); // -1
+// 3. toUpperCase() / toLowerCase() — format name + case-insensitive check
+const displayName = firstName.toUpperCase();
+console.log(displayName); // "ANURAG"
+
+const input = "mysecret@123";
+console.log(password.toLowerCase() === input.toLowerCase()); // true
 
 
-// 5. includes()
-// Returns true if a string contains a specified string, otherwise false. Case-sensitive.
-console.log("5. includes('JavaScript'):", str.includes("JavaScript")); // true
-console.log("   includes('javascript'):", str.includes("javascript")); // false
+// 4. replace() / replaceAll() — fix bio text
+const fixedBio = bio.replaceAll("javascript", "JavaScript");
+console.log(fixedBio);
+// "i love JavaScript. JavaScript is awesome."
+
+const shortBio = fixedBio.replace("i love", "I love");
+console.log(shortBio);
+// "I love JavaScript. JavaScript is awesome."
 
 
-// 6. trim() / trimStart() / trimEnd()
-// Removes whitespace from both ends of a string.
-console.log("6. trim():", `'${str.trim()}'`);
-console.log("   trimStart():", `'${str.trimStart()}'`);
-console.log("   trimEnd():", `'${str.trimEnd()}'`);
+// 5. includes() — check if bio mentions JavaScript
+const hasJS = shortBio.includes("JavaScript");
+console.log(hasJS); // true
+
+const hasSpecial = password.includes("@");
+console.log(hasSpecial); // true
 
 
-// 7. toLowerCase() / toUpperCase()
-// Converts the string to lower/upper case. Often used for case-insensitive comparisons.
-// Interview Question: "How do you check if two strings are equal, ignoring case?"
-const str1 = "Apple";
-const str2 = "apple";
-console.log("7. toLowerCase() comparison:", str1.toLowerCase() === str2.toLowerCase()); // true
+// 6. indexOf() / lastIndexOf() — find positions in userId
+console.log(userId.indexOf("-"));      // 3  → first dash position
+console.log(userId.lastIndexOf("-"));  // 8  → last dash position
+console.log(userId.indexOf("ABC"));    // -1 → not found
 
 
-// 8. charAt() / charCodeAt()
-// charAt: Returns the character at a specified index.
-// charCodeAt: Returns the Unicode of the character at a specified index.
-console.log("8. charAt(0):", word.charAt(0)); // 'J'
-console.log("   charCodeAt(0):", word.charCodeAt(0)); // 74
+// 7. slice() / substring() — extract parts of userId
+const prefix = userId.slice(0, 3);     // "USR"
+const code   = userId.slice(-3);       // "XYZ"  (negative = from end)
+const number = userId.substring(4, 8); // "4829" (no negatives)
+console.log(prefix, code, number);     // "USR"  "XYZ"  "4829"
 
 
-// 9. startsWith() / endsWith()
-// Determines whether a string begins/ends with the characters of a specified string.
-const fileName = "ArrayMethodsInterview.js";
-console.log("9. startsWith('Array'):", fileName.startsWith("Array")); // true
-console.log("   endsWith('.js'):", fileName.endsWith(".js")); // true
+// 8. startsWith() / endsWith() — validate fileName format
+const isValidName = fileName.startsWith("profile_");
+const isImage     = fileName.endsWith(".jpg");
+console.log(isValidName); // true
+console.log(isImage);     // true
+console.log(isValidName && isImage ? "Valid file" : "Invalid file"); // "Valid file"
 
 
-// Bonus: Reverse a string using split, reverse, join
-const reversedWord = word.split('').reverse().join('');
-console.log("Bonus: Reversed 'JavaScript' ->", reversedWord);
+// 9. charAt() / charCodeAt() — inspect first character of userId
+console.log(userId.charAt(0));      // "U"
+console.log(userId.charCodeAt(0));  // 85  (Unicode of "U")
+
+const charCode = cleanName.charCodeAt(0);
+console.log(charCode >= 65 && charCode <= 122); // true → valid name start
+
+
+// Bonus — reverse a string (split + reverse + join)
+const reversed = firstName.split("").reverse().join("");
+console.log(reversed); // "garuna"
+
+
+// ==========================================
+// Cheatsheet
+// ==========================================
+
+// method              | what it does                        | returns
+// --------------------|-------------------------------------|----------
+// trim()              | removes spaces from both ends       | new string
+// split(sep)          | breaks string into array            | array
+// toUpperCase/Lower() | changes case                        | new string
+// replace(a, b)       | replaces first match only           | new string
+// replaceAll(a, b)    | replaces all matches                | new string
+// includes(str)       | checks if string exists inside      | true/false
+// indexOf(str)        | first position of match, -1 if none | number
+// lastIndexOf(str)    | last position of match              | number
+// slice(start, end)   | cuts string, allows negative index  | new string
+// substring(s, e)     | cuts string, no negative index      | new string
+// startsWith(str)     | checks beginning                    | true/false
+// endsWith(str)       | checks ending                       | true/false
+// charAt(i)           | character at index                  | character
+// charCodeAt(i)       | unicode number at index             | number

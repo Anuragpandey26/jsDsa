@@ -1,84 +1,70 @@
-// ==========================================
-// Frequently Asked Array Methods in Interviews
-// ==========================================
+// You are building a Student Report Card System. 
+// You have a raw list of students with their marks, subjects, and details. 
+// Using a single array of student data, perform all the required operations using each method exactly once.
+const students = [
+  { name: "Anurag",  marks: [88, 76, 95], passed: true,  subjects: [["Maths", "Physics"], ["Coding"]] },
+  { name: "Riya",    marks: [45, 38, 50], passed: false, subjects: [["Bio", "Chem"],   ["English"]] },
+  { name: "Karan",   marks: [70, 85, 90], passed: true,  subjects: [["Maths", "Coding"], ["Hindi"]] },
+  { name: "Sneha",   marks: [55, 60, 48], passed: true,  subjects: [["Physics"],           ["Bio"]] },
+  { name: "Dev",     marks: [92, 88, 97], passed: true,  subjects: [["Coding", "Maths"],  ["Science"]] },
+]
+const averages = students.map(s => ({
+  name: s.name,
+  avg: (s.marks.reduce((sum, m) => sum + m, 0) / s.marks.length).toFixed(1)
+}));
+// [{ name:"Anurag", avg:"86.3" }, { name:"Riya", avg:"44.3" }, ...]
+const passedStudents = students.filter(s => s.passed === true);
+const grandTotal = students.reduce((total, s) => {
+  const studentTotal = s.marks.reduce((sum, m) => sum + m, 0);
+  return total + studentTotal;
+}, 0);
+// 1081
+students.forEach(s => {
+  const status = s.passed ? "PASS" : "FAIL";
+  console.log(`${s.name} → ${status}`);
+});
+// Anurag → PASS
+// Riya   → FAIL
+// Karan  → PASS 
+const topper = students.find(s => {
+  const avg = s.marks.reduce((a, b) => a + b, 0) / s.marks.length;
+  return avg > 90;
+});
+// { name: "Dev", marks: [92, 88, 97], ... }
+const top3 = students.slice(0, 3);
+// [Anurag, Riya, Karan] — original array untouched
 
-const numbers = [1, 2, 3, 4, 5];
-const names = ['Alice', 'Bob', 'Charlie', 'David'];
+// also useful: get last 2 students
+const last2 = students.slice(-2);
+// [Sneha, Dev]
+const classList = [...students]; // copy first to avoid mutating original
 
-// 1. map()
-// Creates a new array populated with the results of calling a provided function on every element.
-// Interview Question: "How do you double all numbers in an array?"
-const doubled = numbers.map(num => num * 2);
-console.log("1. map(): Doubled numbers ->", doubled); // [2, 4, 6, 8, 10]
+classList.splice(1, 1, {         // at index 1, remove 1, insert new
+  name: "Priya",
+  marks: [80, 75, 85],
+  passed: true
+});
+// Riya replaced by Priya at position 1
+const allSubjects = students
+  .map(s => s.subjects)   // [ [[Maths,Physics],[Coding]], [[Bio,Chem],[English]], ... ]
+  .flat(2);              // depth 2 — removes both levels of nesting
+// ["Maths","Physics","Coding","Bio","Chem","English","Maths","Coding","Hindi","Physics","Bio","Coding","Maths","Science"]
+const ranked = [...students].sort((a, b) => {
+  const avgA = a.marks.reduce((s, m) => s + m, 0) / a.marks.length;
+  const avgB = b.marks.reduce((s, m) => s + m, 0) / b.marks.length;
+  return avgB - avgA;       // descending
+});
+// Dev(92.3) → Anurag(86.3) → Karan(81.7) → Sneha(54.3) → Riya(44.3)
 
+// method          | returns                  | mutates original?
+// ----------------|--------------------------|------------------
+// map()           | new array, same length   | no
+// filter()        | new array, shorter       | no
+// reduce()        | single value             | no
+// forEach()       | nothing (undefined)      | no
+// find()          | first matched item       | no
+// slice()         | new array, cut portion   | no
+// splice()        | removed items array      | yes  
+// flat()          | new flattened array      | no
+// sort()          | same array, reordered    | yes  
 
-// 2. filter()
-// Creates a new array with all elements that pass the test implemented by the provided function.
-// Interview Question: "How do you get only the even numbers from an array?"
-const evens = numbers.filter(num => num % 2 === 0);
-console.log("2. filter(): Even numbers ->", evens); // [2, 4]
-
-
-// 3. reduce()
-// Executes a reducer function on each element, resulting in a single output value.
-// Interview Question: "How do you find the sum of all elements in an array?"
-const sum = numbers.reduce((accumulator, currentVal) => accumulator + currentVal, 0);
-console.log("3. reduce(): Sum of numbers ->", sum); // 15
-
-
-// 4. forEach()
-// Executes a provided function once for each array element. (Returns undefined, doesn't chain)
-console.log("4. forEach(): Logging names...");
-names.forEach(name => console.log(`   - ${name}`));
-
-
-// 5. find()
-// Returns the FIRST element in the provided array that satisfies the provided testing function.
-// Interview Question: "Find the first number greater than 3."
-const firstGreaterThanThree = numbers.find(num => num > 3);
-console.log("5. find(): First number > 3 ->", firstGreaterThanThree); // 4
-
-
-// 6. some()
-// Tests whether AT LEAST ONE element in the array passes the test. Returns a boolean.
-const hasNegative = numbers.some(num => num < 0);
-console.log("6. some(): Has negative number? ->", hasNegative); // false
-
-
-// 7. every()
-// Tests whether ALL elements in the array pass the test. Returns a boolean.
-const allPositive = numbers.every(num => num > 0);
-console.log("7. every(): Are all numbers positive? ->", allPositive); // true
-
-
-// 8. sort()
-// Sorts the elements of an array IN PLACE and returns the sorted array. 
-// NOTE: By default, it converts elements to strings and compares their UTF-16 code units.
-const unsortedNumbers = [10, 5, 20, 2];
-const ascending = [...unsortedNumbers].sort((a, b) => a - b);
-const descending = [...unsortedNumbers].sort((a, b) => b - a);
-console.log("8. sort(): Ascending ->", ascending); // [2, 5, 10, 20]
-console.log("   sort(): Descending ->", descending); // [20, 10, 5, 2]
-
-
-// 9. flat()
-// Creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.
-// Interview Question: "How do you flatten a nested array?"
-const nestedArray = [1, [2, 3], [4, [5, 6]]];
-const flatArray1 = nestedArray.flat(1); // depth 1
-const flatArray2 = nestedArray.flat(Infinity); // completely flat
-console.log("9. flat(): Depth 1 ->", flatArray1); // [1, 2, 3, 4, [5, 6]]
-console.log("   flat(): Infinity ->", flatArray2); // [1, 2, 3, 4, 5, 6]
-
-
-// 10. slice() vs splice() - VERY COMMON INTERVIEW QUESTION
-// slice(): Returns a shallow copy of a portion of an array into a new array. DOES NOT mutate original.
-const sliced = names.slice(1, 3); 
-console.log("10a. slice(1, 3): ->", sliced); // ['Bob', 'Charlie']
-console.log("     Original array after slice:", names); // Unchanged
-
-// splice(): Changes the contents of an array by removing or replacing existing elements and/or adding new elements. MUTATES original.
-const namesCopy = [...names];
-const spliced = namesCopy.splice(1, 2, 'Zack'); // Start at index 1, remove 2 items, insert 'Zack'
-console.log("10b. splice(): Removed items ->", spliced); // ['Bob', 'Charlie']
-console.log("     Array after splice (Mutated):", namesCopy); // ['Alice', 'Zack', 'David']
